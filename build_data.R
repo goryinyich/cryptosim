@@ -38,6 +38,14 @@ reload.data <- function() {
         fn <- file.path(Config$mdata$cache.dir, paste0(ticker, '.csv'))
         coin.url <- sprintf('https://min-api.cryptocompare.com/data/histoday?fsym=%s&tsym=USD&limit=100000&aggregate=1', ticker)
         coin.data <- fromJSON(paste(readLines(coin.url), collapse=""))
+        # replace NULLS with NAs
+        coin.data$Data <- lapply(
+            coin.data$Data, function(xx) {
+                xx[sapply(xx, is.null)] <- NA
+                xx
+            }
+        )
+        
         data <- do.call(rbind, lapply(coin.data$Data, data.frame))
         if (!is.null(data)) {
             write.table(data, file=fn, row.names = F)
