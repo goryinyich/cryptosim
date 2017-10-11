@@ -10,7 +10,7 @@ calc.pnl <- function(
     tvr.fee
 ) {
     bkts <- cpp_calc_pnl(
-        weights = signal,
+        weights = weights,
         close_px = mdata$Close,
         trading_delay = Config$backtester$trading.delay,
         initial_cash = Config$backtester$initial.capital,
