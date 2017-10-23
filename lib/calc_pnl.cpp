@@ -38,13 +38,13 @@ Rcpp::List cpp_calc_pnl(
                 if (usd_vol / capital[ti] > min_trade_volume) {
                     // do trade
                     fees[ti] += fix_fee * std::max<double>(initial_cash, capital[ti]) + tvr_fee * usd_vol;
-                    slippage[ti] += spread_cost * usd_vol;
-                    curr_cash -= fees[ti] + slippage[ti];
+                    slippage[ti] += spread_cost * usd_vol / 2.0;
                     double qty = weights_target[i] - curr_wts[i];
                     curr_wts[i] += qty;
                     curr_cash -= qty * last_valid_px[i];
                 }
             }
+            curr_cash -= fees[ti] + slippage[ti];
         }
     }
     
